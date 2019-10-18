@@ -1,0 +1,452 @@
+# 1. Libraries
+
+import netCDF4
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import netCDF4 as nc4 
+from datetime import datetime, timedelta 
+from mpl_toolkits.basemap import Basemap
+import pathlib as pl
+import matplotlib.tri as tri
+import sys;sys.path.append('../adcirc_swan')
+import pathlib as pl
+from importlib import reload
+
+# 2. Hurricane Isabel (FolderID) - Max Files
+## 2.1 Max Wave Height - General View
+
+##import netcdf file
+hsm = netCDF4.Dataset('E:/MODEL_TESTS/t17/outputs/swan_HS_max.63.nc', 'r')
+hsmax = hsm.variables['swan_HS_max'][:]
+xmax = hsm.variables['x'][:]
+ymax = hsm.variables['y'][:]
+lat5,lat6 = 11.11, 44.63
+lon5,lon6 = -102.54, -47.19
+#np.min(hsmax),np.max(hsmax)
+levels3 = np.arange(0, 35.00, 3.0)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Wave Height - General View',fontsize=24)
+gridvars = hsm.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = hsm.variables['swan_HS_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat5,urcrnrlat=lat6,
+            llcrnrlon=lon5,urcrnrlon=lon6,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels3,alpha=0.75,
+                vmin=np.min(levels3), vmax=np.max(levels3), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 2.2 Max Wave Height at Chesapeake Bay
+
+##import netcdf file
+hsm = netCDF4.Dataset('E:/MODEL_TESTS/t17/outputs/swan_HS_max.63.nc', 'r')
+hsmax = hsm.variables['swan_HS_max'][:]
+xmax = hsm.variables['x'][:]
+ymax = hsm.variables['y'][:]
+lat1,lat2 = 36.60, 39.90
+lon1,lon2 = -77.73, -74.36
+#np.min(hsmax),np.max(hsmax)
+levels = np.arange(0, 4.00, .25)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Wave Height at Chesapeake Bay',fontsize=24)
+gridvars = hsm.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = hsm.variables['swan_HS_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat1,urcrnrlat=lat2,
+            llcrnrlon=lon1,urcrnrlon=lon2,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels,alpha=0.75,
+                vmin=np.min(levels), vmax=np.max(levels), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 2.3 Max Wave Height at Assateague Park
+
+lat3,lat4 = 38.18, 38.24
+lon3,lon4 = -75.20, -75.09
+#np.min(hsmax),np.max(hsmax)
+levels2 = np.arange(0, 1.00, .05)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Wave Height at Assateague Park',fontsize=24)
+gridvars = hsm.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = hsm.variables['swan_HS_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat3,urcrnrlat=lat4,
+            llcrnrlon=lon3,urcrnrlon=lon4,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels2,alpha=0.75,
+                vmin=np.min(levels2), vmax=np.max(levels2), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 2.4 Max Elevation General View
+
+##import netcdf file
+mele = netCDF4.Dataset('E:/MODEL_TESTS/t17/outputs/maxele.63.nc', 'r')
+elemax = mele.variables['zeta_max'][:]
+xemax = mele.variables['x'][:]
+yemax = mele.variables['y'][:]
+lat5,lat6 = 11.11, 44.63
+lon5,lon6 = -102.54, -47.19
+#np.min(hsmax),np.max(hsmax)
+levels4 = np.arange(0, 8.00, 1.0)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Elevation',fontsize=24)
+gridvars = mele.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = mele.variables['zeta_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat5,urcrnrlat=lat6,
+            llcrnrlon=lon5,urcrnrlon=lon6,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels4,alpha=0.75,
+                vmin=np.min(levels4), vmax=np.max(levels4), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 2.5 Max Elevation at Chesapeake Bay
+
+#np.min(hsmax),np.max(hsmax)
+levels5 = np.arange(0, 4.00, .25)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Elevation at Chesapeake Bay',fontsize=24)
+gridvars = mele.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = mele.variables['zeta_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat1,urcrnrlat=lat2,
+            llcrnrlon=lon1,urcrnrlon=lon2,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels5,alpha=0.75,
+                vmin=np.min(levels5), vmax=np.max(levels5), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 2.6 Max Elevation at Assateague Park
+
+#np.min(hsmax),np.max(hsmax)
+levels6 = np.arange(0, 1.50, .05)
+fig = plt.figure(figsize=(28,20))
+plt.title('Hurricane Isabel - Max Elevation at Chesapeake Bay',fontsize=24)
+gridvars = mele.variables      
+var_element = 'element'
+elems = gridvars[var_element][:,:]-1
+data1 = mele.variables['zeta_max'][:]
+m = Basemap(projection='cyl',llcrnrlat=lat3,urcrnrlat=lat4,
+            llcrnrlon=lon3,urcrnrlon=lon4,resolution='h', epsg = 4269)
+triang = tri.Triangulation(xmax,ymax, triangles=elems)
+m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels=400, verbose= False)
+if data1.mask.any():
+    point_mask_indices = np.where(data1.mask)
+    tri_mask = np.any(np.in1d(elems, point_mask_indices).reshape(-1, 3), axis=1)
+    triang.set_mask(tri_mask)
+plt.tricontourf(triang, data1, levels=levels6,alpha=0.75,
+                vmin=np.min(levels6), vmax=np.max(levels6), aspect='auto',cmap='jet')
+cb = plt.colorbar(cmap='jet',fraction=0.026,pad=0.04) 
+cb.set_label('Wave Height (m)',fontsize=10)
+plt.show()
+
+# 3. Model Validation
+## 3.1 Elevation Data
+
+##import netcdf file
+f63 = netCDF4.Dataset('E:/MODEL_TESTS/t20/outputs/fort.63.nc', 'r')
+##Variable from netcdf
+z63 = f63.variables ['zeta'][:]
+##Convert to DataFrame
+ztab63 = pd.DataFrame(z63)
+ztab63.head()
+
+## 3.2 Elevation Data at *Ocean City* 8570283 Node 170327
+
+##variable for wl from NOAA tides and currents (replace dates and station number)
+url = 'https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&'\
+    'begin_date=20030907&end_date=20030919&datum=NAVD&station=8570283&time_zone=GMT&units=metric&format=csv'
+wloc = pd.read_csv(url,sep=',')
+
+##Use a collumn as index (time)
+#wlobs = wlobs.set_index(wlobs['Date Time'])
+#wlobs.index = pd.to_datetime(wlobs.index)
+#wloc
+wloc.head()
+##Variable using specific node to compare to NOAA station
+oc = f63.variables['zeta'][:,170326]
+octab = pd.DataFrame(oc.data)
+##Use the same freq as your fort.15 (output fort.63 = 3600 = 60min or 1800 = 30min)
+date1 = pd.date_range(start='20030907 00:00:00', periods=int(len(octab)),freq='60min')
+##Insert the date on oc dataframe
+octab['Date Time'] = date1
+##Rename columns
+octab = octab.rename({0:'predicted'}, axis='columns')
+octab.head()
+fig,ax = plt.subplots(figsize=(18,10))
+plt.title('Hurricane Isabel at Ocean City, MD', fontsize=18, fontweight='bold')
+ax.plot(pd.to_datetime(octab['Date Time']),octab['predicted'],c='b',label = 'Predicted')
+ax.plot(pd.to_datetime(wloc['Date Time']),wloc[' Water Level'],c='g',label = 'Observed')
+plt.xlabel('Date', fontweight='bold') 
+plt.ylabel('Water Surface Elevation (m)', fontweight='bold')
+plt.legend();
+
+## 3.3 Elevation Data at *Kiptopeke* 8632200 Node 296105
+
+##variable for wl from NOAA tides and currents (replace dates and station number)
+url = 'https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&'\
+    'begin_date=20030907&end_date=20030919&datum=NAVD&station=8632200&time_zone=GMT&units=metric&format=csv'
+wlkp = pd.read_csv(url,sep=',')
+
+##Use a collumn as index (time)
+#wlobs = wlobs.set_index(wlobs['Date Time'])
+#wlobs.index = pd.to_datetime(wlobs.index)
+#wloc
+##Variable using specific node to compare to NOAA station
+kp = f63.variables['zeta'][:,296105]
+kptab = pd.DataFrame(kp.data)
+##Use the same freq as your fort.15 (output fort.63 = 3600 = 60min or 1800 = 30min)
+date2 = pd.date_range(start='20030907 00:00:00', periods=int(len(kptab)),freq='60min')
+kptab.head()
+##Insert the date on oc dataframe
+kptab['Date Time'] = date2
+##Rename columns
+kptab = octab.rename({0:'predicted'}, axis='columns')
+fig,ax = plt.subplots(figsize=(18,10))
+plt.title('Hurricane Isabel at Kiptopeke, VA', fontsize=18, fontweight='bold')
+ax.plot(pd.to_datetime(kptab['Date Time']),kptab['predicted'],c='b',label = 'Predicted')
+ax.plot(pd.to_datetime(wlkp['Date Time']),wlkp[' Water Level'],c='g',label = 'Observed')
+plt.xlabel('Date', fontweight='bold') 
+plt.ylabel('Water Surface Elevation (m)', fontweight='bold')
+plt.legend();
+
+## 3.4 Elevation Data at *Lewisetta* 8635750 Node 199782
+
+##variable for wl from NOAA tides and currents (replace dates and station number)
+url = 'https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&'\
+    'begin_date=20030907&end_date=20030919&datum=NAVD&station=8635750&time_zone=GMT&units=metric&format=csv'
+wlle = pd.read_csv(url,sep=',')
+
+##Use a collumn as index (time)
+#wlobs = wlobs.set_index(wlobs['Date Time'])
+#wlobs.index = pd.to_datetime(wlobs.index)
+#wloc
+##Variable using specific node to compare to NOAA station
+le = f63.variables['zeta'][:,199782]
+letab = pd.DataFrame(le.data)
+##Use the same freq as your fort.15 (output fort.63 = 3600 = 60min or 1800 = 30min)
+date3 = pd.date_range(start='20030907 00:00:00', periods=int(len(letab)),freq='60min')
+##Insert the date on oc dataframe
+letab['Date Time'] = date3
+##Rename columns
+letab = letab.rename({0:'predicted'}, axis='columns')
+fig,ax = plt.subplots(figsize=(18,10))
+plt.title('Hurricane Isabel at Lewisetta, VA', fontsize=18, fontweight='bold')
+ax.plot(pd.to_datetime(letab['Date Time']),letab['predicted'],c='b',label = 'Predicted')
+ax.plot(pd.to_datetime(wlle['Date Time']),wlle[' Water Level'],c='g',label = 'Observed')
+plt.xlabel('Date', fontweight='bold') 
+plt.ylabel('Water Surface Elevation (m)', fontweight='bold')
+plt.legend();
+
+
+## 3.5 Elevation Data at *Money Point* 8639348 Node 278415
+
+##variable for wl from NOAA tides and currents (replace dates and station number)
+url = 'https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&'\
+    'begin_date=20030907&end_date=20030919&datum=MSL&station=8639348&time_zone=GMT&units=metric&format=csv'
+wlmp = pd.read_csv(url,sep=',')
+
+##Use a collumn as index (time)
+#wlobs = wlobs.set_index(wlobs['Date Time'])
+#wlobs.index = pd.to_datetime(wlobs.index)
+#wloc
+##Variable using specific node to compare to NOAA station
+mp = f63.variables['zeta'][:,278415]
+mptab = pd.DataFrame(mp.data)
+##Use the same freq as your fort.15 (output fort.63 = 3600 = 60min or 1800 = 30min)
+date4 = pd.date_range(start='20030907 00:00:00', periods=int(len(mptab)),freq='60min')
+##Insert the date on oc dataframe
+mptab['Date Time'] = date4
+##Rename columns
+mptab = mptab.rename({0:'predicted'}, axis='columns')
+fig,ax = plt.subplots(figsize=(18,10))
+plt.title('Hurricane Isabel at Money Point, VA', fontsize=18, fontweight='bold')
+ax.plot(pd.to_datetime(mptab['Date Time']),mptab['predicted'],c='b',label = 'Predicted')
+ax.plot(pd.to_datetime(wlmp['Date Time']),(wlmp[' Water Level']-0.060),c='g',label = 'Observed')
+plt.xlabel('Date', fontweight='bold') 
+plt.ylabel('Water Surface Elevation (m)', fontweight='bold')
+plt.legend();
+
+## 3.6 Wave Data at NOAA Station CHLV2 (Location: 36.905N 75.713W)
+
+Model data
+
+##import netcdf file
+swanhs = netCDF4.Dataset('E:/MODEL_TESTS/t20/outputs/2/swan_HS.63.nc', 'r')
+##Variable from netcdf
+hs = swanhs.variables ['swan_HS'][:]
+##Convert to DataFrame
+hstab = pd.DataFrame(hs)
+##Variable using specific node to compare to NOAA station
+hs1 = swanhs.variables['swan_HS'][:,259634]
+hs1tab = pd.DataFrame(hs1)
+hs1tab
+##Date Range
+date5 = pd.date_range(start='20030907 00:00:00', periods=int(len(hs1tab)),freq='60min')
+##Insert the date on oc dataframe
+hs1tab['Date Time'] = date5
+##Rename columns
+hs1tab = hs1tab.rename({0:'predicted'}, axis='columns')
+hs1tab.head()
+
+
+NOAA data
+
+##NOAA Data at CHLV2 from CSV
+hsobs = [99,1.18,1.03,1.15,1.08,99,1.14,1.19,99,99,1.04,99,0.94,99,99,99,0.99,99,0.98,1.03,0.92,0.99,1.02,99,0.94,0.89,0.88,0.91,0.93,99,99,1.08,0.98,1.12,1.22,99,1.19,99,99,99,1.31,1.36,99,1.43,99,99,99,1.34,99,1.62,1.7,1.64,99,1.59,1.56,1.61,1.86,1.78,99,1.99,1.94,2.03,2.16,2.3,2.06,2.79,99,2.7,2.52,3.61,2.94,2.79,2.64,3.09,3.31,99,2.54,2.72,2.68,99,2.98,2.89,2.85,3.03,2.83,2.74,2.83,2.97,2.82,2.57,2.77,99,2.41,2.49,2.45,2.44,2.54,2.3,2.27,99,2.16,2.12,2.07,2.09,2.1,2.25,99,2.09,99,2.17,1.87,2.12,1.88,99,1.9,1.75,1.83,99,99,2.15,2.31,2.21,2.1,2.18,2.05,2.22,2.75,2.3,99,2.2,2.45,99,99,2.83,2.76,2.84,2.57,2.87,2.63,99,2.28,2.45,2.35,2.63,2.41,2.18,2.27,2.02,99,2.16,2.3,99,2.19,2.19,2.42,1.91,2.03,1.82,1.64,1.69,1.85,2,99,1.51,1.44,1.46,1.48,1.46,1.48,1.54,1.59,1.48,1.68,1.45,1.46,1.36,1.39,1.52,1.5,1.4,1.33,1.35,1.31,1.22,1.31,1.19,1.43,1.22,1.25,1.39,1.28,1.32,1.27,99,1.26,1.21,1.24,1.22,1.26,1.28,1.29,1.3,1.45,1.4,1.42,1.61,1.61,99,1.42,1.51,1.46,1.54,99,1.42,1.32,1.4,1.45,1.4,1.3,1.43,1.36,1.31,1.4,1.27,99,1.27,99,99,99,1.75,99,1.75,99,1.62,99,1.63,1.37,99,1.34,1.33,1.21,1.21,99,1.32,1.27,99,99,99,1.37,1.57,1.64,1.73,1.79,99,99,2.19,99,2.15,2.29,2.32,2.5,2.58,99,3.46,3.37,3.42,99,99,99,99,99,3.23,3.22,3.33,99,3.37,99,4.82,4.82,5.53,5.82,5.77,5.78,6.28,6.33,6.15,6.34,5.87,6.12,5.85,5.35,4.81,4.87,4.28,3.72,99,3.1,3.16,99,99,2.39,2.4,99,99,2.02,2.29,1.99,1.73,1.67,99,1.44,1.41]
+hsobstab = pd.DataFrame(hsobs)
+hsobstab = hsobstab.rename({0:'observed'}, axis='columns')
+hsobstab['observed'].replace(99.00,np.nan, inplace=True)
+#hsobstab.head()
+##Date Range
+date6 = pd.date_range(start='20030907 00:00:00', periods=int(len(hsobstab)),freq='60min')
+hsobstab2 = pd.DataFrame({'date':date6,'obs':hsobstab['observed']})
+hsobstab2.head()
+fig,ax = plt.subplots(figsize=(18,10))
+plt.title('Hurricane Isabel at NOAA Station CHLV2', fontsize=18, fontweight='bold')
+ax.plot(pd.to_datetime(hs1tab['Date Time']),hs1tab['predicted'],c='b',label = 'Predicted')
+ax.plot(pd.to_datetime(hsobstab2['date']),hsobstab2['obs'],c='g',label = 'Observed')
+plt.xlabel('Date', fontweight='bold') 
+plt.ylabel('Wave Height (m)', fontweight='bold')
+plt.legend();
+
+# 4. Wave attenuation by vegetaion
+## 4.1 Wave decay plot at Assateague Park
+
+##import netcdf file
+swanhs = netCDF4.Dataset('E:/MODEL_TESTS/t17/outputs/swan_HS.63.nc', 'r')
+##Variable from netcdf
+##hs = swanhs.variables ['swan_HS'][:]
+##Convert to DataFrame
+##hstab = pd.DataFrame(hs)
+##Extract wave info from several nodes (transect)
+wd1 = swanhs.variables['swan_HS'][:,161473]
+wd2 = swanhs.variables['swan_HS'][:,162973]
+wd3 = swanhs.variables['swan_HS'][:,164482]
+wd4 = swanhs.variables['swan_HS'][:,165987]
+wdtab = pd.DataFrame(wd1)
+wdtab = wdtab.rename({0:'wd1'}, axis='columns')
+wdtab['wd4']=wd4
+wdtab.head()
+fig,ax = plt.subplots(figsize=(10,5))
+plt.plot(wdtab)
+max(wdtab['wd1'])
+max(wdtab['wd2'])
+max(wdtab['wd3'])
+max(wdtab['wd4'])
+
+from IPython.display import Image
+Image(filename='C:/Users/admin/work/playground/images/assat2.jpg',width=800, height=400)
+
+fig,ax = plt.subplots(figsize=(10,5))
+plt.plot([600, 400, 200, 0], [0.4104967713356018, 0.3923076391220093, 0.3619596064090729, 0.326092004776001], 'ro')
+plt.axis([700, -100, 0.3, 0.45])
+plt.xlabel('Dist')
+plt.ylabel('HS')
+plt.show()
+
+#5. QC fort.13
+
+path = pl.Path(r'E:\MODEL_TESTS\t16isabelnetcdf')
+with open(path / 'fort.13','r') as fin:
+    lines = fin.readlines()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
