@@ -1,2 +1,2 @@
 # hurricaneisabel
-Hurricane Isabel outputs for ADCIRC + SWAN model
+Hurricane Isabel NetCDF outputs for ADCIRC + SWAN model
